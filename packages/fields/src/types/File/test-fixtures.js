@@ -11,6 +11,7 @@ export const type = File;
 export const supportsUnique = false;
 export const fieldName = 'image';
 export const subfieldName = 'originalFilename';
+export const unSupportedAdapterList = ['prisma'];
 
 // Grab all the image files from the directory
 const directory = './files';
@@ -87,4 +88,7 @@ export const afterAll = () => {
   });
 };
 
-export const supportedFilters = ['null_equality', 'in_empty_null'];
+export const supportedFilters = [
+  'null_equality',
+  // 'in_empty_null'
+];

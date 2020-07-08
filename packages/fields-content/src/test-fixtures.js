@@ -17,6 +17,7 @@ export const supportsUnique = false;
 export const skipRequiredTest = true;
 export const skipCommonFilterTest = true;
 export const skipCommonCrudTest = true;
+export const unSupportedAdapterList = ['prisma'];
 
 export const getTestFields = () => {
   return {

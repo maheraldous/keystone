@@ -14,7 +14,7 @@ const testModules = globby.sync(`packages/**/src/**/test-fixtures.js`, {
 });
 testModules.push(path.resolve('packages/fields/tests/test-fixtures.js'));
 
-multiAdapterRunners().map(({ runner, adapterName }) =>
+multiAdapterRunners('prisma').map(({ runner, adapterName }) =>
   describe(`${adapterName} adapter`, () => {
     testModules
       .map(require)
@@ -22,6 +22,8 @@ multiAdapterRunners().map(({ runner, adapterName }) =>
         ({ skipCrudTest, unSupportedAdapterList = [] }) =>
           !skipCrudTest && !unSupportedAdapterList.includes(adapterName)
       )
+      // .filter(({ name }) => name === 'Slug')
+      // .filter(({ name }) => !['CloudinaryImage'].includes(name))
       .forEach(mod => {
         (mod.testMatrix || ['default']).forEach(matrixValue => {
           const listKey = 'Test';
