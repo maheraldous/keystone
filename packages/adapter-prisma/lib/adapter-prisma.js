@@ -50,20 +50,23 @@ class PrismaAdapter extends BaseKeystoneAdapter {
 
     // If any of our critical directories are missing, or if the schema has changed, then
     // we've got things to do.
+    // console.log('');
+    // console.log({ prismaSchema });
+    // console.log(fs.readFileSync(this.schemaPath, { encoding: 'utf-8' }));
     if (
       !fs.existsSync(this.schemaPath) ||
       !fs.existsSync(this.clientPath) ||
-      !fs.existsSync(this.schemaPath) ||
-      !fs.readFileSync(this.schemaPath, { encoding: 'utf-8' }) === prismaSchema
+      fs.readFileSync(this.schemaPath, { encoding: 'utf-8' }) !== prismaSchema
     ) {
       if (fs.existsSync(this.clientPath)) {
         const existing = fs.readFileSync(this.schemaPath, { encoding: 'utf-8' });
         // console.log({ existing });
         if (existing === prismaSchema) {
           // 2a1. If they're the same, we're golden
+          // console.log('ALL THE SAME!');
         } else {
           // 2a2. If they're different, generate and run a migration
-
+          // console.log('DIFFERENT!');
           // Write prisma file
           this._writePrismaSchema({ prismaSchema });
 
@@ -71,15 +74,19 @@ class PrismaAdapter extends BaseKeystoneAdapter {
           this._executeMigrations();
         }
       } else {
-        // console.log('WRITE');
+        // console.log('SOMETHING MISSING!');
         this._writePrismaSchema({ prismaSchema });
 
         // Generate prisma client
         await this._generatePrismaClient();
 
-        // FIXME: Need to generate and run a migration!!!
+        // Need to generate and run a migration!!!
+        this._saveMigration({ name: 'init' });
+        this._executeMigrations();
       }
-    }
+    } // else {
+    //      console.log('NOTHING TO SEE HERE!');
+    //  }
   }
 
   async _writePrismaSchema({ prismaSchema }) {
@@ -183,9 +190,9 @@ class PrismaAdapter extends BaseKeystoneAdapter {
       listAdapter._postConnect({ rels, prisma: this.prisma });
     });
 
-    if (this.config.dropDatabase && process.env.NODE_ENV !== 'production') {
-      await this.dropDatabase();
-    }
+    // if (this.config.dropDatabase && process.env.NODE_ENV !== 'production') {
+    //   await this.dropDatabase();
+    // }
     return [];
   }
 
