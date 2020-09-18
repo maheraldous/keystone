@@ -130,7 +130,7 @@ multiAdapterRunners('prisma').map(({ runner, adapterName, after }) =>
     testModules
       .map(require)
       .filter(
-        ({ supportsUnique, unSupportedAdapterList }) =>
+        ({ supportsUnique, unSupportedAdapterList = [] }) =>
           !supportsUnique &&
           supportsUnique !== null &&
           !unSupportedAdapterList.includes(adapterName)
