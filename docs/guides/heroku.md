@@ -72,7 +72,7 @@ git init
 heroku git:remote -a <heroku-app-name>
 ```
 
-Commit you app and push it to Heroku
+Commit your app and push it to Heroku
 
 ```sh
 git add .
