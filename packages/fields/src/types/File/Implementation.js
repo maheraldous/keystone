@@ -37,7 +37,7 @@ export class File extends Implementation {
         id: ID
         path: String
         filename: String
-        originalFilename: String
+        testFilename: String
         mimetype: String
         encoding: String
         publicUrl: String
